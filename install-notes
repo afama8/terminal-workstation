@@ -1,0 +1,75 @@
+# Terminal Workstation - Minimal
+
+# Remove cache files
+sudo dnf clean all
+
+# Add PowerTools repo (lynx browser)
+sudo dnf -y install epel-release
+sudo dnf config-manager --set-enabled powertools
+
+# download yum db metadata (cache)
+sudo dnf makecache --refresh
+
+# Update server
+sudo dnf -y update
+
+# Install vim
+sudo dnf install vim
+
+# Install Lynx
+sudo dnf -y install epel-release
+sudo dnf -y install lynx
+
+# Install tmux
+sudo dnf -y install tmux
+
+# Install mutt - email client
+sudo dnf -y install mutt
+
+# Install dxg-utils - used by mutt for file open handling
+sudo dnf -y install dxg-utils
+
+# Install git - used for mutt config
+sudo dnf -y install git
+
+# Used for O365 configuration found https://github.com/ork/mutt-office365.git ~/.mutt
+sudo dnf -y install cyrus-sasl-plain
+
+# Lay down base O365 configuration for mutt
+git clone https://github.com/ork/mutt-office365.git ~/.mutt
+
+# Set vim as default system wide 
+cat <<EOF >> /etc/profile.d/vim.sh
+export VISUAL="vim"
+export EDITOR="vim"
+EOF
+
+# Set vim as default editor for user
+cat <<EOF >> ~/.bash_profile
+export VISUAL="vim"
+export EDITOR="vim"
+EOF
+
+# Create mutt macros file - allows for following links in html emails
+cat <<EOF >> ~/.mutt/macros
+ macro pager \cb <pipe-entry>'urlview'<enter> 'Follow links with urlview' 
+EOF
+
+# Create urlview config
+cat <<EOF >> ~/.urlview
+REGEXP (((http|https|ftp|gopher)|mailto)[.:][^ >"\t]*|www\.[-a-z0-9.]+)[^ .,;\t>">\):]
+COMMAND lynx %s 
+EOF
+
+cat <<EOF >> ~/.mutt/mailcap
+text/html; lynx -assume_charset=%{charset} -display_charset=utf-8 -collapse_br_tags -dump %s; nametemplate=%s.html; copiousoutput
+EOF
+
+cat <<EOF >> ~/mutt/muttrc
+set mailcap_path = ~/.mutt/mailcap
+auto_view text/html
+alternative_order text/plain text/html
+EOF
+
+# Ask user for email creds
+create user, signature files
