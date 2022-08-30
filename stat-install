@@ -1,34 +1,20 @@
 #!/bin/bash
 
-# Script Config
-default_apps=("tmux (screen multiplxer) - provides ability to split screen" 
-	      "Vim (text editor)" 
-	      "Lynx (web browser) - will also install PowerTools repo")
+# load basic app files
+. ./app/user_func.sh
+. ./app/config.sh
+. ./app/text.sh
 
 # User Info Gathering
 clear
 
-echo "
-#################################
-# Terminal Workstation Install #
-#################################
+u_set_default_removes
 
-Hello, thank you for choosing our Terminal Workstation, for your basic terminal 
-needs.
+#echo $not_install
+return 0
 
-No changes will be made to your system during this phase. Feel free to exit 
-the installion at any point. 
+IFS=', ' read -r -a remove <<< "$not_install"
 
-By default the following tools, and their required packages, will be installed:"
-
-for i in ${!default_apps[@]}; do
-	echo "$(($i+1)). ${default_apps[$i]}"
-done
-
-echo "Q. Quit
-
-If you do NOT want to install any of these tools, please list them by number
-seperated by a comma:"
-read not_install
-
-echo $not_install
+if [[ " ${remove[*]} " =~ "Q" ]]; then
+	    # whatever you want to do when array contains value
+fi
