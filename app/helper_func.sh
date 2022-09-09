@@ -3,13 +3,21 @@
 h_set_default_removes() {
     # Ask user about default apps
     u_get_default_removes
+    h_validate_user_input_choices ${#default_apps[@]} "${removes[@]}"
+}
+
+h_validate_user_input_choices() {
+    local option_count="$1"
+    shift
+    local options=("$@")
 
     # Parse and validate user input
     IFS=', ' read -r -a removes <<< "$remove"
-    
+    # Start while loop
+    # Iteration accepts choices
     h_validate_choices ${#default_apps[@]} "${removes[@]}" 
     if [[ 1 -eq $? ]]; then
-	echo "We have an error"
+	# Invalid option selected
 	exit 0
     fi
 }

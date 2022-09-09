@@ -2,19 +2,15 @@
 
 # load basic app files
 . ./app/user_func.sh
+. ./app/helper_func.sh
 . ./app/config.sh
 . ./app/text.sh
 
 # User Info Gathering
 clear
 
-u_set_default_removes
+h_set_default_removes
+echo "So far, so good"
+exit 0
 
-#echo $not_install
-return 0
 
-IFS=', ' read -r -a remove <<< "$not_install"
-
-if [[ " ${remove[*]} " =~ "Q" ]]; then
-	    # whatever you want to do when array contains value
-fi

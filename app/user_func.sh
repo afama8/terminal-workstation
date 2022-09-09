@@ -1,7 +1,7 @@
 #!/bin/bash
 
-
-u_set_default_removes() {
+# Initial Greeting - default apps
+u_get_default_removes() {
     echo "${greetings}"
     
     for i in ${!default_apps[@]}; do
@@ -9,5 +9,11 @@ u_set_default_removes() {
     done
 
     echo "${greetings2}"
-    read not_install
+    read remove
+}
+
+u_retry_prompt() {
+    unset retry
+    echo "${invalid_option_prompt}"
+    read retry
 }
