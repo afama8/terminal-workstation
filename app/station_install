@@ -1,16 +1,15 @@
 #!/bin/bash
 
 # load basic app files
-. ./app/user_func.sh
-. ./app/helper_func.sh
-. ./app/config.sh
-. ./app/text.sh
+. ./config.sh
+. ./controller/view.sh
+. ./view/user.sh
+. ./view/text.sh
 
 # User Info Gathering
 clear
 
 h_set_default_removes
 echo "So far, so good"
-exit 0
 
 

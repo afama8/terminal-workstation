@@ -24,4 +24,8 @@ seperated by a comma:"
 
 goodbye="Sorry to see you go. No changes have been made to your system."
 
-invalid_option_prompt="Invalid option entered. Please retry:"
+invalid_option_prompt="Invalid option entered. Please retry: "
+
+verify_quit="Are you sure you want to quit? (y/n): "
+
+error_quit="It seems there is an error. The application must exit now."

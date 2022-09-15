@@ -9,11 +9,25 @@ u_get_default_removes() {
     done
 
     echo "${greetings2}"
-    read remove
+    u_ask
 }
 
 u_retry_prompt() {
-    unset retry
-    echo "${invalid_option_prompt}"
-    read retry
+    echo -n "${invalid_option_prompt}"
+    u_ask
+}
+
+u_verify_quit() {
+    echo -n "${verify_quit}"
+    u_ask
+}
+
+u_error_exit() {
+    echo "${error_quit}"
+    exit 1
+}
+
+u_ask() {
+    unset user_input
+    read user_input
 }
