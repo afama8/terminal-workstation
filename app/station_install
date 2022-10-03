@@ -1,15 +1,27 @@
 #!/bin/bash
 
+# ############################
+#
+# Project: Terminal Workstation
+# Author: Al Fama (afama8 - GitHub)
+# Repository: git@github.com:afama8/terminal-workstation.git
+#
+# Purpose: Initial script to load framework and pass process to controller.
+# Visibility: Global
+# Global Variables (referenced, created, updated):
+#
+##############################
+
 # load basic app files
 . ./config.sh
 . ./controller/view.sh
 . ./view/user.sh
 . ./view/text.sh
 
-# User Info Gathering
+# Start app
 clear
-
 h_set_default_removes
+
 echo "So far, so good"
 
 

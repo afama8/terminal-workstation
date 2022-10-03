@@ -1,11 +1,40 @@
 #!/bin/bash
 
+##############################
+#
+# Project: Terminal Workstation
+# Author: Al Fama (afama8 - GitHub)
+# Repository: git@github.com:afama8/terminal-workstation.git
+#
+# Purpose: 
+# Visibility: View
+# Global Variables (referenced, created, updated):
+#
+##############################
+
+
+##############################
+#
+# Purpose: of function
+# Visibility: who should be using the function.
+# Arguments: accepted and their expected type
+# Return: created/update global variables
+#
+##############################
 h_set_default_removes() {
     # Ask user about default apps
     u_get_default_removes
     h_validate_user_choices ${#default_apps[@]}
 }
 
+##############################
+#
+# Purpose: of function
+# Visibility: who should be using the function.
+# Arguments: accepted and their expected type
+# Return: created/update global variables
+#
+##############################
 h_validate_user_choices() {
     local option_count="$1"
     local retry_count=2
@@ -30,6 +59,14 @@ h_validate_user_choices() {
     fi
 }
 
+##############################
+#
+# Purpose: of function
+# Visibility: who should be using the function.
+# Arguments: accepted and their expected type
+# Return: created/update global variables
+#
+##############################
 h_validate_choices() {
     local option_count="$1"
     
@@ -46,6 +83,14 @@ h_validate_choices() {
     done
 }
 
+##############################
+#
+# Purpose: of function
+# Visibility: who should be using the function.
+# Arguments: accepted and their expected type
+# Return: created/update global variables
+#
+##############################
 h_check_quit() {
     local options=("$@")
     
@@ -54,6 +99,14 @@ h_check_quit() {
     fi
 }
 
+##############################
+#
+# Purpose: of function
+# Visibility: who should be using the function.
+# Arguments: accepted and their expected type
+# Return: created/update global variables
+#
+##############################
 # Note: This function will overwrite $user_input, store value before calling.
 h_verify_quit() {
     u_verify_quit
