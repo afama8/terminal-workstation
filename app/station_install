@@ -4,23 +4,27 @@
 #
 # Project: Terminal Workstation
 # Author: Al Fama (afama8 - GitHub)
+# License: GNU General Public License v3.0
 # Repository: git@github.com:afama8/terminal-workstation.git
 #
+# File: station_install.sh
 # Purpose: Initial script to load framework and pass process to controller.
 # Visibility: Global
-# Global Variables (referenced, created, updated):
+# Global Variables (created, updated): None
+#
+# File Loads:
+# - config.sh: Application configuration file
+# - controller/main.sh: Provide access to all workflows
 #
 ##############################
-
-# load basic app files
 . ./config.sh
-. ./controller/view.sh
-. ./view/user.sh
-. ./view/text.sh
+. ./controller/main.sh
+
 
 # Start app
 clear
-h_set_default_removes
+h_main
+
 
 echo "So far, so good"
 
