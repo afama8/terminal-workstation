@@ -23,31 +23,15 @@
 #
 # Purpose: Initial workflow kickoff
 # Visibility: Framework - Public
-# Calls: h_set_default_removes
+# Uses: fwcm_set_default_removes
 # Used By: station_install.sh
+#
 # Arguments: None
 # Global Variables (created, updated): None
 # Return: void
 #
 ##############################
-h_main() {
-    h_set_default_removes
+fwcm_main() {
+    fwcm_set_default_removes
 }
 
-##############################
-#
-# Purpose: Initial workflow kickoff, define default tools not to be installed
-# Visibility: Framework - Public
-# Calls: u_get_default_removes, h_validate_user_choices
-# Used By: h_main
-#
-# Arguments: None
-# Global Variables (created, updated): None
-# Return: void
-#
-##############################
-h_set_default_removes() {
-    # Ask user about default apps
-    u_get_default_removes
-    h_validate_user_input ${#default_apps[@]}
-}

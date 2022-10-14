@@ -13,82 +13,82 @@
 # Global Variables (created, updated): user_input
 #
 # File Loads:
-# - view/text.sh: Provides framework functionality for interacting with the user
+# - view/lang/en.sh: Contains all text output by framework - English
 #
 ##############################
-. ./view/text.sh
+. ./view/lang/en.sh
 
 ##############################
 #
 # Purpose: Greets user, asks if any defaults should not be installed.
 # Visibility: Framework - Public
-# Calls: u_ask
-# Used By: h_set_default_removes
+# Uses: fwvu_ask
+# Used By: fwcm_set_default_removes
 #
 # Arguments: None
 # Global Variables (created, updated): None
 # Return: void
 #
 ##############################
-u_get_default_removes() {
-    echo "${greetings}"
+fwvu_get_default_removes() {
+    echo "${fwvl_greetings}"
     
-    for i in ${!default_apps[@]}; do
-        echo "$(($i+1)). ${default_apps[$i]}"
+    for i in ${!fwvl_default_apps[@]}; do
+        echo "$(($i+1)). ${fwvl_default_apps[$i]}"
     done
 
-    echo "${greetings2}"
-    u_ask
+    echo "${fwvl_greetings2}"
+    fwvu_ask
 }
 
 ##############################
 #
 # Purpose: Notifies user of invalid input, prompt for retry
 # Visibility: Framework - Public
-# Calls: u_ask
-# Used By: h_validate_user_input
+# Uses: fwvu_ask
+# Used By: fwcv_validate_user_input
 #
 # Arguments: None
 # Global Variables (created, updated): None
 # Return: void
 #
 ##############################
-u_retry_prompt() {
-    echo -n "${invalid_option_prompt}"
-    u_ask
+fwvu_retry_prompt() {
+    echo -n "${fwvl_invalid_option_prompt}"
+    fwvu_ask
 }
 
 ##############################
 #
 # Purpose: Prompts user for quit confirmation
 # Visibility: Framework - Public
-# Calls: u_ask
-# Used By: h_check_quit
+# Uses: fwvu_ask
+# Used By: fwcv_check_quit
 #
 # Arguments: None
 # Global Variables (created, updated): None
 # Return: void
 #
 ##############################
-u_verify_quit() {
-    echo -n "${verify_quit}"
-    u_ask
+fwvu_verify_quit() {
+    echo -n "${fwvl_verify_quit}"
+    fwvu_ask
 }
 
 ##############################
 #
 # Purpose: Notify user of an internal error, exit app
 # Visibility: Framework - Public
-# Calls: None
-# Used By: h_validate_user_input
+# Uses: None
+# Used By: fwcv_validate_user_input
 #
 # Arguments: None
 # Global Variables (created, updated): None
 # Return: void
 #
 ##############################
-u_error_exit() {
-    echo "${error_quit}"
+fwvu_error_exit() {
+    echo "${fwvl_error_quit}"
     exit 1
 }
 
@@ -96,16 +96,16 @@ u_error_exit() {
 #
 # Purpose: User or application exits, purposefully
 # Visibility: Framework - Public
-# Calls: None
-# Used By: h_verify_quit
+# Uses: None
+# Used By: fwvu_verify_quit
 #
 # Arguments: None
 # Global Variables (created, updated): None
 # Return: void
 #
 ##############################
-u_exit() {
-    echo "${goodbye}"
+fwvu_exit() {
+    echo "${fwvl_goodbye}"
     exit 0
 }
 
@@ -113,16 +113,16 @@ u_exit() {
 #
 # Purpose: Manage input from user
 # Visibility: Framework - Private
-# Calls: None
-# Used By: u_get_default_removes, u_retry_prompt, u_verify_quit, u_error_exit
-# u_exit
+# Uses: None
+# Used By: fwvu_get_default_removes, fwvu_retry_prompt, fwvu_verify_quit, 
+# fwvu_error_exit, fwvu_exit
 #
 # Arguments: None
 # Global Variables (created, updated): user_input
 # Return: void
 #
 ##############################
-u_ask() {
+fwvu_ask() {
     unset user_input
     read user_input
 }

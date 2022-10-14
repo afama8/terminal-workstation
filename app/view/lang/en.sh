@@ -22,10 +22,10 @@
 ##############################
 #
 # Purpose: Initial output, greet, start default tools
-# Used By: u_get_default_removes
+# Used By: fwvu_get_default_removes
 #
 ##############################
-greetings="
+fwvl_greetings="
 #################################
 # Terminal Workstation Install #
 #################################
@@ -41,10 +41,10 @@ By default the following tools, and their required packages, will be installed:"
 ##############################
 #
 # Purpose: List default tools
-# Used By: u_get_default_removes
+# Used By: fwvu_get_default_removes
 #
 ##############################
-default_apps=("tmux (screen multiplxer) - provides ability to split screen" 
+fwvl_default_apps=("tmux (screen multiplxer) - provides ability to split screen" 
 	      "Vim (text editor)" 
 	      "Lynx (web browser) - will also install PowerTools repo")
 
@@ -52,49 +52,49 @@ default_apps=("tmux (screen multiplxer) - provides ability to split screen"
 ##############################
 #
 # Purpose: Default tool prompt
-# Used By: u_get_default_removes
+# Used By: fwvu_get_default_removes
 #
 ##############################
-default_tool_prompt="If you do NOT want to install any of these tools, please list them by number
+fwvl_default_tool_prompt="If you do NOT want to install any of these tools, please list them by number
 seperated by a comma:"
 
 ##############################
 #
 # Purpose: Add quit option
-# Used By: u_get_default_removes
+# Used By: fwvu_get_default_removes
 #
 ##############################
-quit_option="Q. Quit
+fwvl_quit_option="Q. Quit
 "
 
 ##############################
 #
 # Purpose: User quit message
-# Used By: u_exit
+# Used By: fwvu_exit
 #
 ##############################
-goodbye="Sorry to see you go. No changes have been made to your system."
+fwvl_goodbye="Sorry to see you go. No changes have been made to your system."
 
 ##############################
 #
 # Purpose: Invalid option prompt
-# Used By: u_retry_prompt
+# Used By: fwvu_retry_prompt
 #
 ##############################
-invalid_option_prompt="Invalid option entered. Please retry: "
+fwvl_invalid_option_prompt="Invalid option entered. Please retry: "
 
 ##############################
 #
 # Purpose: Verify quit prompt
-# Used By: u_verify_quit_prompt
+# Used By: fwvu_verify_quit_prompt
 #
 ##############################
-verify_quit="Are you sure you want to quit? (y/n): "
+fwvl_verify_quit="Are you sure you want to quit? (y/n): "
 
 ##############################
 #
 # Purpose: Unexpected error, exit
-# Used By: u_error_exit
+# Used By: fwvu_error_exit
 #
 ##############################
-error_quit="It seems there is an error. The application must exit now."
+fwvl_error_quit="It seems there is an error. The application must exit now."
