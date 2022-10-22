@@ -32,6 +32,6 @@
 #
 ##############################
 fwcm_main() {
-    fwcm_set_default_removes
+    fwcv_set_default_removes
 }
 

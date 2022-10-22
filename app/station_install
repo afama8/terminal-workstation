@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# ############################
+##############################
 #
 # Project: Terminal Workstation
 # Author: Al Fama (afama8 - GitHub)
@@ -23,7 +23,7 @@
 
 # Start app
 clear
-h_main
+fwcm_main
 
 
 echo "So far, so good"

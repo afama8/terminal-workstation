@@ -37,7 +37,8 @@ fwvu_get_default_removes() {
         echo "$(($i+1)). ${fwvl_default_apps[$i]}"
     done
 
-    echo "${fwvl_greetings2}"
+    echo "${fwvl_quit_option}"
+    echo "${fwvl_default_tool_prompt}"
     fwvu_ask
 }
 

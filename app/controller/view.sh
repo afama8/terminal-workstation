@@ -34,7 +34,7 @@
 fwcv_set_default_removes() {
     # Ask user about default apps
     fwvu_get_default_removes
-    fwcv_validate_user_input ${#default_apps[@]}
+    fwcv_validate_user_input ${#fwvl_default_apps[@]}
 }
 
 ##############################
@@ -54,7 +54,7 @@ fwcv_validate_user_input() {
     local option_count="$1"
     # remove magic number
     local retry_count=2
-
+    
     while [ $retry_count != 0 ]; do
         # switch begin
 
@@ -124,7 +124,7 @@ fwcv_check_quit() {
     local options=("$@")
     # Check if argument recived is an array, if not convert to array
     if [[ " ${options[*]^^} " =~ "Q" ]]; then
-	fwvu_verify_quit
+	fwcv_verify_quit
     fi
 }
 
