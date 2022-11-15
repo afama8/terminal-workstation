@@ -18,6 +18,9 @@
 ##############################
 . ./view/lang/en.sh
 
+fwvu_greet_user() {
+    fwvu_output "${fwvl_greetings}" true
+}
 ##############################
 #
 # Purpose: Greets user, asks if any defaults should not be installed.
@@ -31,15 +34,15 @@
 #
 ##############################
 fwvu_get_default_removes() {
-    echo "${fwvl_greetings}"
+    
+    local msg="\n${defaults_prompt}\n"
     
     for i in ${!fwvl_default_apps[@]}; do
-        echo "$(($i+1)). ${fwvl_default_apps[$i]}"
+        local msg+="$(($i+1)). ${fwvl_default_apps[$i]}\n"
     done
 
-    echo "${fwvl_quit_option}"
-    echo "${fwvl_default_tool_prompt}"
-    fwvu_ask
+    local msg+="${fwvl_quit_option}\n${fwvl_default_tool_prompt}"
+    fwvu_output "${msg}" true true
 }
 
 ##############################
@@ -55,8 +58,14 @@ fwvu_get_default_removes() {
 #
 ##############################
 fwvu_retry_prompt() {
-    echo -n "${fwvl_invalid_option_prompt}"
-    fwvu_ask
+    local validate_type="$1"
+
+    case $validate_type in
+    options)
+        fwvu_output "${fwvl_invalid_option_prompt}" false true
+        ;;
+
+    esac
 }
 
 ##############################
@@ -72,8 +81,30 @@ fwvu_retry_prompt() {
 #
 ##############################
 fwvu_verify_quit() {
-    echo -n "${fwvl_verify_quit}"
-    fwvu_ask
+    fwvu_output "${fwvl_verify_quit}" false true
+}
+
+##############################
+#
+# Purpose: Prompts after user does not quit
+# Visibility: Framework - Public
+# Uses: fwvu_ask
+# Used By: fwcv_check_quit
+#
+# Arguments: None
+# Global Variables (created, updated): None
+# Return: void
+#
+##############################
+fwvu_no_quit() {
+    local process="$1"
+
+    case $process in
+    defaults)
+        fwvu_get_default_removes
+        ;;
+
+    esac
 }
 
 ##############################
@@ -89,7 +120,7 @@ fwvu_verify_quit() {
 #
 ##############################
 fwvu_error_exit() {
-    echo "${fwvl_error_quit}"
+    fwvu_output "${fwvl_error_quit}" true
     exit 1
 }
 
@@ -106,24 +137,76 @@ fwvu_error_exit() {
 #
 ##############################
 fwvu_exit() {
-    echo "${fwvl_goodbye}"
+    fwvu_output "${fwvl_goodbye}" true
     exit 0
 }
 
 ##############################
 #
-# Purpose: Manage input from user
+# Purpose: Prompts user for input
 # Visibility: Framework - Private
 # Uses: None
 # Used By: fwvu_get_default_removes, fwvu_retry_prompt, fwvu_verify_quit, 
 # fwvu_error_exit, fwvu_exit
 #
+# Arguments: 
+#  $msg (str) - text to ouput
+#  $nl (bool) - set to true to output newline after msg
+#  $prompt (bool) - set to true to prompt user for input 
+# Global Variables (created, updated): None
+# Return: void
+#
+##############################
+fwvu_output() {
+    local msg=$1
+    local nl=$2
+    local prompt=$3
+
+    fwvu_msg "${msg}" $nl
+    if [ "$prompt" = true ]; then
+        fwvu_prompt
+    fi
+}
+
+##############################
+#
+# Purpose: Output message to user
+# Visibility: Framework - Private
+# Uses: None
+# Used By: fwvu_output
+#
 # Arguments: None
+#  $msg (str) - text to ouput
+#  $nl (bool) - set to true to output newline after msg
+# Global Variables (created, updated): None
+# Return: void
+#
+##############################
+fwvu_msg() {
+    local msg=$1
+    local nl=$2
+
+    if [ "$nl" = true ]; then
+        echo -e "${msg}"
+    else
+        echo -n -e "${msg}"
+    fi
+}
+
+##############################
+#
+# Purpose: Prompt user for input
+# Visibility: Framework - Private
+# Uses: None
+# Used By: fwvu_output
+#
+# Arguments: None
+#  $prompt (bool) - set to true to prompt user for input 
 # Global Variables (created, updated): user_input
 # Return: void
 #
 ##############################
-fwvu_ask() {
+fwvu_prompt() {
     unset user_input
     read user_input
 }

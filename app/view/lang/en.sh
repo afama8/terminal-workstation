@@ -34,9 +34,15 @@ Hello, thank you for choosing our Terminal Workstation, for your basic terminal
 needs.
 
 No changes will be made to your system during this phase. Feel free to exit 
-the installion at any point. 
+the installion at any point."
 
-By default the following tools, and their required packages, will be installed:"
+##############################
+#
+# Purpose: List default tools
+# Used By: fwvu_get_default_removes
+#
+##############################
+defaults_prompt="By default the following tools, and their required packages, will be installed:"
 
 ##############################
 #
@@ -90,6 +96,14 @@ fwvl_invalid_option_prompt="Invalid option entered. Please retry: "
 #
 ##############################
 fwvl_verify_quit="Are you sure you want to quit? (y/n): "
+
+##############################
+#
+# Purpose: Polite retry, seen when user chooses not to quit at confirmation. 
+# Used By: fwvu_no_quit
+#
+##############################
+fwvl_no_quit="Please retry: "
 
 ##############################
 #

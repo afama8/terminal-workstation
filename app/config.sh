@@ -16,4 +16,4 @@
 #
 ##############################
 
-fwc_retry_count=2
+fwc_retry_count=3

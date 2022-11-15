@@ -8,13 +8,13 @@
 # Repository: git@github.com:afama8/terminal-workstation.git
 #
 # File: station_install.sh
-# Purpose: Initial script to load framework and pass process to controller.
+# Purpose: Initial script to pass process to controller.
 # Visibility: Global
 # Global Variables (created, updated): None
 #
 # File Loads:
 # - config.sh: Application configuration file
-# - controller/main.sh: Provide access to all workflows
+# - controller/main.sh: Provide access to all application workflows
 #
 ##############################
 . ./config.sh

@@ -23,7 +23,7 @@
 #
 # Purpose: Define default tools not to be installed
 # Visibility: Framework - Public
-# Uses: fwvu_get_default_removes, fwcv_validate_user_choices
+# Uses: fwvu_greet_user, fwvu_get_default_removes, fwcv_validate_user_input
 # Used By: fwcm_main
 #
 # Arguments: None
@@ -33,8 +33,9 @@
 ##############################
 fwcv_set_default_removes() {
     # Ask user about default apps
+    fwvu_greet_user
     fwvu_get_default_removes
-    fwcv_validate_user_input ${#fwvl_default_apps[@]}
+    fwcv_validate_user_input "defaults" "options" ${#fwvl_default_apps[@]}
 }
 
 ##############################
@@ -45,39 +46,49 @@ fwcv_set_default_removes() {
 # Used By: fwcm_set_default_removes, fwvu_retry_prompt,
 # fwvu_error_exit
 #
-# Arguments: validate_type (str) , [option_count (int)] 
-# Global Variables (created, updated): choices
+# Arguments: validate_type (str), process (str) ,[option_count (int)]
+# Global Variables: choices, fwc_retry_count, user_input (destroyed)
 # Return: void
 #
 ##############################
 fwcv_validate_user_input() {
-    local option_count="$1"
-    # remove magic number
-    local retry_count=2
-    
-    while [ $retry_count != 0 ]; do
-        # switch begin
+    local process="$1"
+    local validate_type="$2"
+    # localize config var
+    local retry_count=$fwc_retry_count
+    local valid=1
 
-        # case: $validate_type == 'options'
-        # Parse and validate user input
-	IFS=', ' read -r -a choices <<< "$user_input"
-        fwcv_check_quit "${choices[@]}"
-        # Iteration accepts choices
-	fwcv_validate_choices $option_count
-	# end
+    while [[ $retry_count != 0 ]]; do
+        # Check if user wants to quit
+        fwcv_check_quit $process
+        
+        # Skip on 1st iteration
+        if [[ $retry_count != $fwc_retry_count ]]; then
+	    fwvu_retry_prompt $validate_type
+        fi
+        
+        case $validate_type in
+        options)
+            local option_count="$3"
+            # Parse and validate user input
+	    IFS=', ' read -r -a choices <<< "$user_input"
+            # Iteration accepts choices
+	    fwcv_validate_choices $option_count
+            valid=$?
+            ;;
 
-	# switch end
+        esac
 
-        if [[ 1 -eq $? ]]; then
-	    # Invalid option selected
-	    (( retry_count-- ))
-	    fwvu_retry_prompt
-	    continue
-	fi
-	break
+        if [[ 0 -eq $valid ]]; then
+            echo $valid
+            break
+        fi
+	# Invalid option selected
+	(( retry_count-- ))
+
     done
-    
-    if [ $retry_count == 0 ]; then
+
+    if [[ 0 == $retry_count && 1 -eq $valid ]]; then
         fwvu_error_exit
     fi
 }
@@ -96,7 +107,7 @@ fwcv_validate_user_input() {
 ##############################
 fwcv_validate_choices() {
     local option_count="$1"
-    
+
     # Validate option is valid int
     for val in ${choices[@]}; do
         if [[ $option_count -lt $val ]] || 
@@ -106,6 +117,7 @@ fwcv_validate_choices() {
 	    return 1
     	fi
     done
+    return 0
 }
 
 ##############################
@@ -116,15 +128,15 @@ fwcv_validate_choices() {
 # Used By: fwcv_validate_user_input
 # 
 # Arguments: user_input (mixed)
-# Global Variables (created, updated): None
+# Global Variables  (created, updated): None
 # Return: void
 #
 ##############################
 fwcv_check_quit() {
-    local options=("$@")
+    local process="$1"
     # Check if argument recived is an array, if not convert to array
-    if [[ " ${options[*]^^} " =~ "Q" ]]; then
-	fwcv_verify_quit
+    if [[ " ${user_input^^} " =~ "Q" ]]; then
+	fwcv_verify_quit $process
     fi
 }
 
@@ -141,8 +153,13 @@ fwcv_check_quit() {
 #
 ##############################
 fwcv_verify_quit() {
+    local process="$1"
+    
     fwvu_verify_quit
+
     if [[ " ${user_input^^} " =~ "Y" ]]; then
         fwvu_exit
     fi
+
+    fwvu_no_quit $process
 }

@@ -23,7 +23,7 @@
 #
 # Purpose: Initial workflow kickoff
 # Visibility: Framework - Public
-# Uses: fwcm_set_default_removes
+# Uses: fwcv_set_default_removes
 # Used By: station_install.sh
 #
 # Arguments: None
