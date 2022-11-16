@@ -10,7 +10,7 @@
 # File: controller/main.sh
 # Purpose: Provide access to all application workflows
 # Visibility: Framework - Public
-# Global Variables (created, updated): None
+# Global Variables: None
 #
 # File Loads:
 # - controller/view.sh: Manage workflows interacting directly with the user.
@@ -27,7 +27,7 @@
 # Used By: station_install.sh
 #
 # Arguments: None
-# Global Variables (created, updated): None
+# Global Variables: None
 # Return: void
 #
 ##############################

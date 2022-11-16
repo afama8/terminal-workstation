@@ -21,8 +21,8 @@
 
 ##############################
 #
-# Purpose: Initial output, greet, start default tools
-# Used By: fwvu_get_default_removes
+# Purpose: Initial output, greet user
+# Used By: fwvu_greet_user
 #
 ##############################
 fwvl_greetings="
@@ -38,7 +38,7 @@ the installion at any point."
 
 ##############################
 #
-# Purpose: List default tools
+# Purpose: Default tools defined
 # Used By: fwvu_get_default_removes
 #
 ##############################
@@ -46,7 +46,7 @@ defaults_prompt="By default the following tools, and their required packages, wi
 
 ##############################
 #
-# Purpose: List default tools
+# Purpose: List of default tools
 # Used By: fwvu_get_default_removes
 #
 ##############################
@@ -100,7 +100,7 @@ fwvl_verify_quit="Are you sure you want to quit? (y/n): "
 ##############################
 #
 # Purpose: Polite retry, seen when user chooses not to quit at confirmation. 
-# Used By: fwvu_no_quit
+# Used By: 
 #
 ##############################
 fwvl_no_quit="Please retry: "

@@ -10,7 +10,9 @@
 # File: view/user.sh
 # Purpose: Provides framework all functionality for interacting with the user. 
 # Visibility: Framework - Public
-# Global Variables (created, updated): user_input
+# Global Variables: fwvl_greetings, defaults_prompt, fwvl_default_apps, 
+# fwvl_quit_option, fwvl_default_tool_prompt, fwvl_invalid_option_prompt, 
+# fwvl_verify_quit, fwvl_error_quit, fwvl_goodbye, 
 #
 # File Loads:
 # - view/lang/en.sh: Contains all text output by framework - English
@@ -18,30 +20,43 @@
 ##############################
 . ./view/lang/en.sh
 
+##############################
+#
+# Purpose: Greets user
+# Visibility: Framework - Public
+# Uses: fwvu_output
+# Used By: fwcv_set_default_removes
+#
+# Arguments: None
+# Global Variables: fwvl_greetings
+# Return: void
+#
+##############################
 fwvu_greet_user() {
     fwvu_output "${fwvl_greetings}" true
 }
+
 ##############################
 #
-# Purpose: Greets user, asks if any defaults should not be installed.
+# Purpose: Present default tools, ask user if all should be installed.
 # Visibility: Framework - Public
-# Uses: fwvu_ask
-# Used By: fwcm_set_default_removes
+# Uses: fwvu_output
+# Used By: fwcv_set_default_removes
 #
 # Arguments: None
-# Global Variables (created, updated): None
+# Global Variables: defaults_prompt, fwvl_default_apps, fwvl_quit_option,
+# fwvl_default_tool_prompt
 # Return: void
 #
 ##############################
 fwvu_get_default_removes() {
-    
     local msg="\n${defaults_prompt}\n"
     
     for i in ${!fwvl_default_apps[@]}; do
-        local msg+="$(($i+1)). ${fwvl_default_apps[$i]}\n"
+        msg+="$(($i+1)). ${fwvl_default_apps[$i]}\n"
     done
 
-    local msg+="${fwvl_quit_option}\n${fwvl_default_tool_prompt}"
+    msg+="${fwvl_quit_option}\n${fwvl_default_tool_prompt}"
     fwvu_output "${msg}" true true
 }
 
@@ -49,11 +64,11 @@ fwvu_get_default_removes() {
 #
 # Purpose: Notifies user of invalid input, prompt for retry
 # Visibility: Framework - Public
-# Uses: fwvu_ask
+# Uses: fwvu_output
 # Used By: fwcv_validate_user_input
 #
-# Arguments: None
-# Global Variables (created, updated): None
+# Arguments: validation_type (str)
+# Global Variables: fwvl_invalid_option_prompt
 # Return: void
 #
 ##############################
@@ -72,11 +87,11 @@ fwvu_retry_prompt() {
 #
 # Purpose: Prompts user for quit confirmation
 # Visibility: Framework - Public
-# Uses: fwvu_ask
-# Used By: fwcv_check_quit
+# Uses: fwvu_output
+# Used By: fwcv_verify_quit
 #
 # Arguments: None
-# Global Variables (created, updated): None
+# Global Variables: fwvl_verify_quit
 # Return: void
 #
 ##############################
@@ -88,11 +103,11 @@ fwvu_verify_quit() {
 #
 # Purpose: Prompts after user does not quit
 # Visibility: Framework - Public
-# Uses: fwvu_ask
-# Used By: fwcv_check_quit
+# Uses: fwvu_get_default_removes
+# Used By: fwcv_verify_quit
 #
-# Arguments: None
-# Global Variables (created, updated): None
+# Arguments: process (str)
+# Global Variables: None
 # Return: void
 #
 ##############################
@@ -111,11 +126,11 @@ fwvu_no_quit() {
 #
 # Purpose: Notify user of an internal error, exit app
 # Visibility: Framework - Public
-# Uses: None
+# Uses: fwvu_output
 # Used By: fwcv_validate_user_input
 #
 # Arguments: None
-# Global Variables (created, updated): None
+# Global Variables: fwvl_error_quit
 # Return: void
 #
 ##############################
@@ -128,11 +143,11 @@ fwvu_error_exit() {
 #
 # Purpose: User or application exits, purposefully
 # Visibility: Framework - Public
-# Uses: None
+# Uses: fwcv_output
 # Used By: fwvu_verify_quit
 #
 # Arguments: None
-# Global Variables (created, updated): None
+# Global Variables: fwvl_goodbye
 # Return: void
 #
 ##############################
@@ -143,17 +158,14 @@ fwvu_exit() {
 
 ##############################
 #
-# Purpose: Prompts user for input
+# Purpose: Manages output to user
 # Visibility: Framework - Private
-# Uses: None
-# Used By: fwvu_get_default_removes, fwvu_retry_prompt, fwvu_verify_quit, 
-# fwvu_error_exit, fwvu_exit
+# Uses: fwvu_msg, fwvu_prompt
+# Used By: fwvu_greet_user, fwvu_get_default_removes, fwvu_retry_prompt, 
+# fwvu_verify_quit, fwvu_error_exit, fwvu_exit
 #
-# Arguments: 
-#  $msg (str) - text to ouput
-#  $nl (bool) - set to true to output newline after msg
-#  $prompt (bool) - set to true to prompt user for input 
-# Global Variables (created, updated): None
+# Arguments: msg (str), nl (bool), prompt (bool)
+# Global Variables: None
 # Return: void
 #
 ##############################
@@ -175,10 +187,8 @@ fwvu_output() {
 # Uses: None
 # Used By: fwvu_output
 #
-# Arguments: None
-#  $msg (str) - text to ouput
-#  $nl (bool) - set to true to output newline after msg
-# Global Variables (created, updated): None
+# Arguments: msg (str), nl (bool)
+# Global Variables: None
 # Return: void
 #
 ##############################
@@ -188,9 +198,10 @@ fwvu_msg() {
 
     if [ "$nl" = true ]; then
         echo -e "${msg}"
-    else
-        echo -n -e "${msg}"
+        return 0
     fi
+    
+    echo -n -e "${msg}"
 }
 
 ##############################
@@ -201,8 +212,7 @@ fwvu_msg() {
 # Used By: fwvu_output
 #
 # Arguments: None
-#  $prompt (bool) - set to true to prompt user for input 
-# Global Variables (created, updated): user_input
+# Global Variables: user_input
 # Return: void
 #
 ##############################

@@ -10,7 +10,7 @@
 # File: controller/view.sh
 # Purpose: Manage workflows interacting directly with the user. 
 # Visibility: Framework - Private
-# Global Variables (created, updated): choices
+# Global Variables: choices, fwc_try_count, user_input
 #
 # File Loads:
 # - user.sh: Provides framework all functionality for interacting with the user
@@ -27,7 +27,7 @@
 # Used By: fwcm_main
 #
 # Arguments: None
-# Global Variables (created, updated): None
+# Global Variables: None
 # Return: void
 #
 ##############################
@@ -42,12 +42,12 @@ fwcv_set_default_removes() {
 #
 # Purpose: Initial function to validate all user input 
 # Visibility: Framework - Public
-# Uses: fwcv_check_quit, fwcv_validate_choices
-# Used By: fwcm_set_default_removes, fwvu_retry_prompt,
+# Uses: fwcv_check_quit, fwcv_validate_choices, fwvu_retry_prompt, 
 # fwvu_error_exit
-#
-# Arguments: validate_type (str), process (str) ,[option_count (int)]
-# Global Variables: choices, fwc_retry_count, user_input (destroyed)
+# Used By: fwcv_set_default_removes
+# 
+# Arguments: process (str), validate_type (str), [option_count (int)]
+# Global Variables: choices, fwc_try_count, user_input
 # Return: void
 #
 ##############################
@@ -55,15 +55,15 @@ fwcv_validate_user_input() {
     local process="$1"
     local validate_type="$2"
     # localize config var
-    local retry_count=$fwc_retry_count
+    local try_count=$fwc_try_count
     local valid=1
 
-    while [[ $retry_count != 0 ]]; do
+    while [[ $try_count != 0 ]]; do
         # Check if user wants to quit
         fwcv_check_quit $process
         
         # Skip on 1st iteration
-        if [[ $retry_count != $fwc_retry_count ]]; then
+        if [[ $try_count != $fwc_try_count ]]; then
 	    fwvu_retry_prompt $validate_type
         fi
         
@@ -71,20 +71,20 @@ fwcv_validate_user_input() {
         options)
             local option_count="$3"
             # Parse and validate user input
-	    IFS=', ' read -r -a choices <<< "$user_input"
+            IFS=', ' read -r -a choices <<< "$user_input"
             # Iteration accepts choices
-	    fwcv_validate_choices $option_count
+            fwcv_validate_choices $option_count
             valid=$?
             ;;
 
         esac
-
+        
+        unset $user_input
         if [[ 0 -eq $valid ]]; then
-            echo $valid
             break
         fi
 	# Invalid option selected
-	(( retry_count-- ))
+	(( try_count-- ))
 
     done
 
@@ -100,8 +100,8 @@ fwcv_validate_user_input() {
 # Uses: None
 # Used By: fwcv_validate_user_input
 #
-# Arguments: None
-# Global Variables (created, updated): None
+# Arguments: option_count (int)
+# Global Variables: choices
 # Return: int 0 = valid, 1 = not valid
 #
 ##############################
@@ -124,19 +124,19 @@ fwcv_validate_choices() {
 #
 # Purpose: Determines if user wants to quit the app - quit workflow
 # Visibility: Framework - Private
-# Calls: fwvu_verify_quit
+# Calls: fwcv_verify_quit
 # Used By: fwcv_validate_user_input
 # 
-# Arguments: user_input (mixed)
-# Global Variables  (created, updated): None
+# Arguments: process (str)
+# Global Variables: user_input
 # Return: void
 #
 ##############################
 fwcv_check_quit() {
     local process="$1"
-    # Check if argument recived is an array, if not convert to array
+    
     if [[ " ${user_input^^} " =~ "Q" ]]; then
-	fwcv_verify_quit $process
+        fwcv_verify_quit $process
     fi
 }
 
@@ -144,11 +144,11 @@ fwcv_check_quit() {
 #
 # Purpose: Confirm user would like to quit
 # Visibility: Framework - Private
-# Uses: fwvu_verify_quit, fwvu_exit
+# Uses: fwvu_verify_quit, fwvu_exit, fwvu_no_quit
 # Used By: fwcv_check_quit
 #
-# Arguments: None
-# Global Variables (created, updated): None
+# Arguments: process (str)
+# Global Variables: user_input
 # Return: void
 #
 ##############################

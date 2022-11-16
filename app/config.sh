@@ -10,10 +10,16 @@
 # File: config.sh
 # Purpose: Application Configuration File
 # Visibility: Global
-# Global Variables (created, updated): fw_retry_count
+# Global Variables: fwc_try_count
 #
 # File Loads: None
 #
 ##############################
 
-fwc_retry_count=3
+##############################
+#
+# Purpose: The number of chances a user has to submit a valid response
+# Used By: fwcv_validate_user_input
+#
+##############################
+fwc_try_count=3
