@@ -23,7 +23,7 @@
 #
 # Purpose: Initial workflow kickoff
 # Visibility: Framework - Public
-# Uses: fwcv_set_default_removes
+# Uses: fwcv_set_default_removes, fwcv_load_lang
 # Used By: station_install.sh
 #
 # Arguments: None
@@ -32,6 +32,7 @@
 #
 ##############################
 fwcm_main() {
+    fwcv_load_lang
     fwcv_set_default_removes
 }
 

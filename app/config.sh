@@ -23,3 +23,20 @@
 #
 ##############################
 fwc_try_count=3
+
+##############################
+#
+# Purpose: Language directory path
+# Used By: fwcv_load_lang
+#
+##############################
+fwc_lang_dir="./view/lang"
+
+##############################
+#
+# Purpose: Default language file
+# Used By: fwcv_load_lang
+#
+##############################
+fwc_default_lang_file="en_US.sh"
+

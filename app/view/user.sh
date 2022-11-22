@@ -14,11 +14,10 @@
 # fwvl_quit_option, fwvl_default_tool_prompt, fwvl_invalid_option_prompt, 
 # fwvl_verify_quit, fwvl_error_quit, fwvl_goodbye, 
 #
-# File Loads:
-# - view/lang/en.sh: Contains all text output by framework - English
+# File Loads: None
 #
 ##############################
-. ./view/lang/en.sh
+
 
 ##############################
 #

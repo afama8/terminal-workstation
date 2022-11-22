@@ -18,6 +18,27 @@
 ##############################
 . ./view/user.sh
 
+##############################
+#
+# Purpose: Load language file based on system setting.
+# Visibility: Framework - Public
+# Uses: 
+# Used By: fwcm_main
+#
+# Arguments: None
+# Global Variables: None
+# Return: void
+#
+##############################
+fwcv_load_lang() {
+    local lang=$LANG
+    local lang_file="${fwc_lang_dir}/${fwc_default_lang_file}"
+
+    if test -f "${fwc_lang_dir}/${lang%.*}.sh"; then
+        lang_file=${fwc_lang_dir}/${lang%.*}.sh
+    fi
+    . $lang_file
+}
 
 ##############################
 #
@@ -42,7 +63,7 @@ fwcv_set_default_removes() {
 #
 # Purpose: Initial function to validate all user input 
 # Visibility: Framework - Public
-# Uses: fwcv_check_quit, fwcv_validate_choices, fwvu_retry_prompt, 
+# Uses: fwcv_check_quit, fwcv_validation_controller, fwvu_retry_prompt, 
 # fwvu_error_exit
 # Used By: fwcv_set_default_removes
 # 
@@ -59,38 +80,56 @@ fwcv_validate_user_input() {
     local valid=1
 
     while [[ $try_count != 0 ]]; do
-        # Check if user wants to quit
         fwcv_check_quit $process
         
         # Skip on 1st iteration
         if [[ $try_count != $fwc_try_count ]]; then
-	    fwvu_retry_prompt $validate_type
+            fwvu_retry_prompt $validate_type
         fi
         
-        case $validate_type in
-        options)
-            local option_count="$3"
-            # Parse and validate user input
-            IFS=', ' read -r -a choices <<< "$user_input"
-            # Iteration accepts choices
-            fwcv_validate_choices $option_count
-            valid=$?
-            ;;
+        fwcv_validation_controller $@ 
+        valid=$?
 
-        esac
-        
         unset $user_input
         if [[ 0 -eq $valid ]]; then
-            break
+            return 0
         fi
-	# Invalid option selected
-	(( try_count-- ))
-
+        # Invalid option selected
+        (( try_count-- ))
     done
+    # If we are here there is an error
+    fwvu_error_exit
+}
 
-    if [[ 0 == $retry_count && 1 -eq $valid ]]; then
-        fwvu_error_exit
-    fi
+##############################
+#
+# Purpose: Validation controller for user input
+# Visibility: Framework - Private
+# Uses: fwcv_validate_choices
+# Used By: fwcv_validate_user_input
+# 
+# Arguments: process (str), validate_type (str), [option_count (int)]
+# Global Variables: user_input, choices
+# Return: int 0 = valid, 1 = not valid
+#
+##############################
+fwcv_validation_controller() {
+    local process="$1"
+    local validate_type="$2"
+    local valid=1
+
+    case $validate_type in
+    options)
+        local option_count="$3"
+        # Parse and validate user input
+        IFS=', ' read -r -a choices <<< "$user_input"
+        # Iteration accepts choices
+        fwcv_validate_choices $option_count
+        valid=$?
+        ;;
+    esac
+
+    return $valid
 }
 
 ##############################
