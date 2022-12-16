@@ -1,6 +1,6 @@
 ```mermaid
 flowchart TD
-    subgraoph Controller
+    subgraph Controller
     A[station_install] --> B[fwcm_main]
     subgraph View Controller
     B --> C[fwcv_load_lang]

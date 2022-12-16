@@ -1,5 +1,5 @@
 ```mermaid
-flowchart TD
+flowchart RL
     subgraph s_qr[Quit Routine]
     H[fwcv_check_quit] 
     L[fwcv_verify_quit] 

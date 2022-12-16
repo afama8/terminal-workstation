@@ -1,4 +1,4 @@
-```mermiad
+```mermaid
 flowchart LR
     A[station_install]
     B[fwcm_main]
