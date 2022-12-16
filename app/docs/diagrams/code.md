@@ -1,16 +1,20 @@
 ```mermaid
-flowchart TD
+flowchart LR
+    A[station_install]
+    A --> B
     subgraph Controller
-    A[station_install] --> B[fwcm_main]
+    B[fwcm_main]
     subgraph View Controller
-    B --> C[fwcv_load_lang]
-    B --> D[fwcv_set_default_removes]
+    C[fwcv_load_lang]
+    D[fwcv_set_default_removes]
     D --> G[fwcv_validate_user_input]
     G --> H[fwcv_check_quit] 
     G --> I[fwcv_validation_controller] 
     I --> K[fwcv_validate_choices]
     H --> L[fwcv_verify_quit]
     end
+    B --> C
+    B --> D
     end
     subgraph View User
     D --> E[fwvu_greet_user] 
