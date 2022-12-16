@@ -1,3 +1,4 @@
+```mermaid
 flowchart TD
     subgraph s_qr[Quit Routine]
     H[fwcv_check_quit] 
@@ -13,3 +14,4 @@ flowchart TD
     N -- Send to buffer --> s_or
     L -- Confirmed --> N
     L --> O
+```

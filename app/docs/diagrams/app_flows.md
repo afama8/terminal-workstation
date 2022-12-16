@@ -1,3 +1,4 @@
+```mermiad
 flowchart LR
     A[station_install]
     B[fwcm_main]
@@ -48,3 +49,4 @@ flowchart LR
     I --> K
     G -- If validation fails --> J
     J --> s_or
+```
