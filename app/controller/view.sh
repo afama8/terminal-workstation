@@ -163,7 +163,7 @@ fwcv_validate_choices() {
 #
 # Purpose: Determines if user wants to quit the app - quit workflow
 # Visibility: Framework - Private
-# Calls: fwcv_verify_quit
+# Uses: fwcv_verify_quit
 # Used By: fwcv_validate_user_input
 # 
 # Arguments: process (str)
