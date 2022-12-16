@@ -1,5 +1,5 @@
 ```mermaid
-flowchart RL
+flowchart LR
     subgraph s_qr[Quit Routine]
     H[fwcv_check_quit] 
     L[fwcv_verify_quit] 
@@ -7,7 +7,7 @@ flowchart RL
     N[fwvu_exit - Define goodbye message]
     O[fwvu_no_quit - Redirect process back to caller]
     end
-
+    s_or[Output Routine]
     H -- If quit detected --> L
     L -- Ask user if sure --> M
     M -- Prompt --> s_or
